@@ -1,0 +1,142 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.goout</groupId>
+	<artifactId>stalker</artifactId>
+	<version>0.1</version>
+	<packaging>war</packaging>
+
+	<properties>
+		<version.thorntail>2.2.1.Final</version.thorntail>
+		<version.restassured>3.0.7</version.restassured>
+		<failOnMissingWebXml>false</failOnMissingWebXml>
+		<mongo.db.driver>3.6.4</mongo.db.driver>
+		<version.resteasy>3.6.2.Final</version.resteasy>
+		<slf4j.version>1.7.25</slf4j.version>
+		<embedded.mongo>1.10.0</embedded.mongo>
+		<junit>4.12</junit>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.thorntail</groupId>
+				<artifactId>bom</artifactId>
+				<version>${version.thorntail}</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>${mongo.db.driver}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>de.bwaldvogel</groupId>
+			<artifactId>mongo-java-server</artifactId>
+			<version>${embedded.mongo}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>jaxrs</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>cdi</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>ejb</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>microprofile-restclient</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.ejb</groupId>
+			<artifactId>ejb-api</artifactId>
+			<version>3.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>arquillian</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>jsonp</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>${version.restassured}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+
+
+		<!-- <dependency> <groupId>org.jboss.resteasy</groupId> <artifactId>resteasy-client</artifactId> 
+			<scope>test</scope> </dependency> -->
+
+
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>microprofile-config</artifactId>
+		</dependency>
+
+		<!-- <dependency> <groupId>io.thorntail</groupId> <artifactId>microprofile-metrics</artifactId> 
+			</dependency> -->
+
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit}</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<finalName>goout-stalker</finalName>
+		<plugins>
+			<plugin>
+				<groupId>io.thorntail</groupId>
+				<artifactId>thorntail-maven-plugin</artifactId>
+				<version>${version.thorntail}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>package</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
