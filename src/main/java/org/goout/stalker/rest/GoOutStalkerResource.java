@@ -46,7 +46,7 @@ public class GoOutStalkerResource {
 		return Response.ok().build();
 	}
 
-	@Path("/artists/retrieve")
+	@Path("/artists/all")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllArtists() {
