@@ -59,14 +59,13 @@ public class GoOutTimerService {
 		// either we have a new set of events of we are adding the first set of events
 		// ever
 
-		logger.info("past notification:" + pastNotification);
-		logger.info("notification count" + dbService.getNotificationIdCount());
+		logger.debug("past Notification id:" + pastNotification);
 		if (pastNotification == null || dbService.getNotificationIdCount() == 0L) {
 
 			logger.info("New events found - sending email notification");
 			dbService.removeNotificationId();
 			dbService.insertNotificationId(String.valueOf(events.hashCode()));
-			// email.send(events);
+			email.send(events);
 		} else {
 			logger.info("No new events found - not sending an email");
 		}
@@ -80,7 +79,7 @@ public class GoOutTimerService {
 
 			if (!config.SMTP_PORT().equals("N/A") && !config.SMTP_SERVER().equals("N/A")
 					&& !config.MAIL_PASSWORD().equals("N/A") && !config.MAIL_USERNAME().equals("N/A")) {
-				logger.info("Enabling email notifications");
+				logger.info("Enabling email notifications, smtp : {} ", config.SMTP_SERVER());
 
 				ScheduleExpression se = new ScheduleExpression();
 				// For testing purposes, let's use SECONDS, in prod, let's use hours
