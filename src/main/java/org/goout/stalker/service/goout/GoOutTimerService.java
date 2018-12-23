@@ -50,6 +50,8 @@ public class GoOutTimerService {
 		ArtistList artists = dbService.findAllArtists(config.ARTIST_COL_NAME());
 		EventsByArtists events = goOutService.getEvents(artists, config.GO_OUT_CITY());
 		email.send(events);
+		
+		//TODO: Only send email with notifications if new ones are found
 
 	}
 
@@ -58,8 +60,8 @@ public class GoOutTimerService {
 
 		if (config.NOTIFICATIONS_ENABLED().equals("true")) {
 
-			if (config.SMTP_PORT() != "N/A" && config.SMTP_SERVER() != "N/A" && config.MAIL_PASSWORD() != "N/A"
-					&& config.MAIL_USERNAME() != "N/A") {
+			if (!config.SMTP_PORT().equals("N/A") && !config.SMTP_SERVER().equals("N/A")
+					&& !config.MAIL_PASSWORD().equals("N/A") && !config.MAIL_USERNAME().equals("N/A")) {
 
 				ScheduleExpression se = new ScheduleExpression();
 				// For testing purposes, let's use SECONDS, in prod, let's use hours
