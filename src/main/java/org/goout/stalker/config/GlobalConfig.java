@@ -16,19 +16,23 @@ public class GlobalConfig {
 	private String mail_subject = "Go Out Stalker Notification";
 
 	@Inject
-	@ConfigProperty(name = "SMTP_SERVER")
+	@ConfigProperty(name = "NOTIFICATIONS_ENABLED")
+	private String notifications;
+
+	@Inject
+	@ConfigProperty(name = "SMTP_SERVER", defaultValue="N/A")
 	private String smtp_server;
 
 	@Inject
-	@ConfigProperty(name = "MAIL_USERNAME")
+	@ConfigProperty(name = "MAIL_USERNAME", defaultValue="N/A")
 	private String mailUser;
 
 	@Inject
-	@ConfigProperty(name = "SMTP_PORT")
+	@ConfigProperty(name = "SMTP_PORT", defaultValue="N/A")
 	private String smtp_port;
 
 	@Inject
-	@ConfigProperty(name = "MAIL_PASSWORD")
+	@ConfigProperty(name = "MAIL_PASSWORD", defaultValue="N/A")
 	private String mailPassword;
 
 	@Inject
@@ -72,6 +76,11 @@ public class GlobalConfig {
 
 	public String MAIL_SUBJECT() {
 		return mail_subject;
+	}
+
+	public String NOTIFICATIONS_ENABLED() {
+
+		return notifications;
 	}
 
 	public String SMTP_SERVER() {

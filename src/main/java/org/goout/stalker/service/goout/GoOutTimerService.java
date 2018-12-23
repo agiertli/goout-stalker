@@ -56,16 +56,30 @@ public class GoOutTimerService {
 	@PostConstruct
 	public void init() {
 
-		ScheduleExpression se = new ScheduleExpression();
-		// For testing purposes, let's use SECONDS, in prod, let's use hours
-		if (config.TESTING()) {
-			se.hour("*").minute("*").second("0/" + config.TIMER_INTERVAL());
+		if (config.NOTIFICATIONS_ENABLED().equals("true")) {
+
+			if (config.SMTP_PORT() != "N/A" && config.SMTP_SERVER() != "N/A" && config.MAIL_PASSWORD() != "N/A"
+					&& config.MAIL_USERNAME() != "N/A") {
+
+				ScheduleExpression se = new ScheduleExpression();
+				// For testing purposes, let's use SECONDS, in prod, let's use hours
+				if (config.TESTING()) {
+					se.hour("*").minute("*").second("0/" + config.TIMER_INTERVAL());
+				} else {
+
+					se.hour("*/" + config.TIMER_INTERVAL()).minute("0").second(0);
+
+				}
+
+				timerService.createCalendarTimer(se, new TimerConfig("EJB timer service timeout at ", false));
+			} else {
+				logger.warn(
+						"Email notifications not enabled due to missing configuration values - please add smtp host, port, username and password");
+			}
 		} else {
 
-			se.hour("*/" + config.TIMER_INTERVAL()).minute("0").second(0);
-
+			logger.info("Email notifications disabled");
 		}
-		timerService.createCalendarTimer(se, new TimerConfig("EJB timer service timeout at ", false));
 	}
 
 	@PreDestroy
