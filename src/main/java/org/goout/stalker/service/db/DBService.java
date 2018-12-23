@@ -2,7 +2,6 @@ package org.goout.stalker.service.db;
 
 import static com.mongodb.client.model.Filters.eq;
 
-import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -10,17 +9,16 @@ import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 
 import org.bson.Document;
+import org.goout.stalker.config.GlobalConfig;
 import org.goout.stalker.model.ArtistList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
-import com.mongodb.MongoCredential;
-import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
 
 @Stateless
 public class DBService {
@@ -29,6 +27,11 @@ public class DBService {
 
 	@EJB
 	private DBConnection connection;
+
+	@Inject
+	private GlobalConfig config;
+
+	Logger logger = LoggerFactory.getLogger(DBService.class.getName());
 
 	public DBService() {
 	}
@@ -58,11 +61,33 @@ public class DBService {
 		});
 
 		col.insertMany(toBeInserted);
+	}
+
+	public long getNotificationIdCount() {
+
+		return connection.getDb().getCollection(config.NOTIFICATION_COL_NAME()).count();
+	}
+
+	public long removeNotificationId() {
+		MongoCollection<Document> col = connection.getDb().getCollection(config.NOTIFICATION_COL_NAME());
+		Document deleteMe = col.find().first();
+		if (deleteMe != null) {
+			col.deleteOne(eq("_id", deleteMe.getString("_id")));
+			return 1;
+		}
+		return 0;
+	}
+
+	public void insertNotificationId(String notificationId) {
+
+		MongoCollection<Document> col = connection.getDb().getCollection(config.NOTIFICATION_COL_NAME());
+		Document doc = new Document().append("_id", notificationId);
+		col.insertOne(doc);
 
 	}
 
-	public String findById(String artistId, String colName) {
-		Document doc = connection.getDb().getCollection(colName).find(eq("_id", artistId)).first();
+	public String findById(String documentId, String colName) {
+		Document doc = connection.getDb().getCollection(colName).find(eq("_id", documentId)).first();
 
 		return doc == null ? null : doc.getString("_id");
 	}

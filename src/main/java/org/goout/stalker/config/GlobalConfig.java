@@ -14,25 +14,26 @@ public class GlobalConfig {
 	private String GOOUT_HOMEPAGE = "http://goout.net";
 	private DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	private String mail_subject = "Go Out Stalker Notification";
+	private String EMAIL_INTRO = "Hi,\n here are some new events for you. \n";
 
 	@Inject
 	@ConfigProperty(name = "NOTIFICATIONS_ENABLED")
 	private String notifications;
 
 	@Inject
-	@ConfigProperty(name = "SMTP_SERVER", defaultValue="N/A")
+	@ConfigProperty(name = "SMTP_SERVER", defaultValue = "N/A")
 	private String smtp_server;
 
 	@Inject
-	@ConfigProperty(name = "MAIL_USERNAME", defaultValue="N/A")
+	@ConfigProperty(name = "MAIL_USERNAME", defaultValue = "N/A")
 	private String mailUser;
 
 	@Inject
-	@ConfigProperty(name = "SMTP_PORT", defaultValue="N/A")
+	@ConfigProperty(name = "SMTP_PORT", defaultValue = "N/A")
 	private String smtp_port;
 
 	@Inject
-	@ConfigProperty(name = "MAIL_PASSWORD", defaultValue="N/A")
+	@ConfigProperty(name = "MAIL_PASSWORD", defaultValue = "N/A")
 	private String mailPassword;
 
 	@Inject
@@ -58,9 +59,10 @@ public class GlobalConfig {
 	@Inject
 	@ConfigProperty(name = "GO_OUT_CITY")
 	private String city;
-	@Inject
-	@ConfigProperty(name = "ARTIST_COL_NAME")
-	private String colName;
+
+	private final String artistColName = "artists";
+
+	private final String notificationColName = "notificationId";
 
 	@Inject
 	@ConfigProperty(name = "TIMER_INTERVAL")
@@ -73,6 +75,14 @@ public class GlobalConfig {
 	@Inject
 	@ConfigProperty(name = "TESTING")
 	private Boolean testing;
+
+	public String NOTIFICATION_COL_NAME() {
+		return notificationColName;
+	}
+
+	public String EMAIL_INTRO() {
+		return EMAIL_INTRO;
+	}
 
 	public String MAIL_SUBJECT() {
 		return mail_subject;
@@ -151,7 +161,7 @@ public class GlobalConfig {
 	}
 
 	public String ARTIST_COL_NAME() {
-		return colName;
+		return artistColName;
 	}
 
 }

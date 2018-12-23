@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.goout</groupId>
-	<artifactId>stalker</artifactId>
+	<artifactId>goout-stalker</artifactId>
 	<version>0.1</version>
 	<packaging>war</packaging>
 
@@ -107,20 +107,10 @@
 			<version>${slf4j.version}</version>
 		</dependency>
 
-
-
-		<!-- <dependency> <groupId>org.jboss.resteasy</groupId> <artifactId>resteasy-client</artifactId> 
-			<scope>test</scope> </dependency> -->
-
-
 		<dependency>
 			<groupId>io.thorntail</groupId>
 			<artifactId>microprofile-config</artifactId>
 		</dependency>
-
-		<!-- <dependency> <groupId>io.thorntail</groupId> <artifactId>microprofile-metrics</artifactId> 
-			</dependency> -->
-
 
 		<dependency>
 			<groupId>junit</groupId>
@@ -132,7 +122,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>goout-${project.artifactId}</finalName>
+		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>io.thorntail</groupId>
@@ -177,14 +167,14 @@
                       <inline>
                         <files>
                           <file>
-                            <source>${project.build.directory}/goout-${project.artifactId}-thorntail.jar</source>
+                            <source>${project.build.directory}/${project.artifactId}-thorntail.jar</source>
                             <outputDirectory>/opt</outputDirectory>
                           </file>
                         </files>
                       </inline>
                     </assembly>
                     <entryPoint>
-                      <shell>java -jar /opt/goout-${project.artifactId}-thorntail.jar</shell>
+                      <shell>java -jar /opt/${project.artifactId}-thorntail.jar</shell>
                     </entryPoint>
                   </build>
                 </image>
