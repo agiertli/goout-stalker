@@ -13,6 +13,23 @@ public class GlobalConfig {
 	private String URL_BASE = "https://goout.net/services/feeder/v1/events.json?source=goout&keywords=%s&language=en&unapproved=false&clearDomain=true";
 	private String GOOUT_HOMEPAGE = "http://goout.net";
 	private DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	private String mail_subject = "Go Out Stalker Notification";
+
+	@Inject
+	@ConfigProperty(name = "SMTP_SERVER")
+	private String smtp_server;
+
+	@Inject
+	@ConfigProperty(name = "MAIL_USERNAME")
+	private String mailUser;
+
+	@Inject
+	@ConfigProperty(name = "SMTP_PORT")
+	private String smtp_port;
+
+	@Inject
+	@ConfigProperty(name = "MAIL_PASSWORD")
+	private String mailPassword;
 
 	@Inject
 	@ConfigProperty(name = "DB_PORT")
@@ -52,6 +69,28 @@ public class GlobalConfig {
 	@Inject
 	@ConfigProperty(name = "TESTING")
 	private Boolean testing;
+
+	public String MAIL_SUBJECT() {
+		return mail_subject;
+	}
+
+	public String SMTP_SERVER() {
+
+		return smtp_server;
+	}
+
+	public String SMTP_PORT() {
+		return smtp_port;
+	}
+
+	public String MAIL_USERNAME() {
+
+		return mailUser;
+	}
+
+	public String MAIL_PASSWORD() {
+		return mailPassword;
+	}
 
 	public String DB_USERNAME() {
 		return username;

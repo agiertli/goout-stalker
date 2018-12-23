@@ -17,6 +17,7 @@ import org.goout.stalker.config.GlobalConfig;
 import org.goout.stalker.model.ArtistList;
 import org.goout.stalker.model.EventsByArtists;
 import org.goout.stalker.service.db.DBService;
+import org.goout.stalker.service.email.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +29,9 @@ public class GoOutTimerService {
 	private DBService dbService;
 	@Resource
 	private TimerService timerService;
+
+	@EJB
+	private EmailService email;
 
 	@EJB
 	private GoOutService goOutService;
@@ -45,8 +49,7 @@ public class GoOutTimerService {
 		logger.info("Timer fired - connecting to GoOut");
 		ArtistList artists = dbService.findAllArtists(config.ARTIST_COL_NAME());
 		EventsByArtists events = goOutService.getEvents(artists, config.GO_OUT_CITY());
-
-		// TODO : Send email with the events
+		email.send(events);
 
 	}
 
