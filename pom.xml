@@ -17,6 +17,7 @@
 		<embedded.mongo>1.10.0</embedded.mongo>
 		<junit>4.12</junit>
 		<mail.version>1.4.7</mail.version>
+		<docker.plugin>0.28.0</docker.plugin>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
@@ -131,7 +132,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>goout-stalker</finalName>
+		<finalName>goout-${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>io.thorntail</groupId>
@@ -147,4 +148,62 @@
 			</plugin>
 		</plugins>
 	</build>
+
+  <profiles>
+    <profile>
+      <id>docker</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker.plugin}</version>
+            <configuration>
+              <images>
+                <image>
+                  <name>${project.build.finalName}</name>
+                  <run>
+                    <ports>
+                      <port>8080:8080</port>
+                    </ports>
+                  </run>
+                  <build>
+                    <from>java:openjdk-8-jdk</from>
+                    <ports>
+                      <port>8080</port>
+                    </ports>
+                    <assembly>
+                      <basedir>/</basedir>
+                      <inline>
+                        <files>
+                          <file>
+                            <source>${project.build.directory}/goout-${project.artifactId}-thorntail.jar</source>
+                            <outputDirectory>/opt</outputDirectory>
+                          </file>
+                        </files>
+                      </inline>
+                    </assembly>
+                    <entryPoint>
+                      <shell>java -jar /opt/goout-${project.artifactId}-thorntail.jar</shell>
+                    </entryPoint>
+                  </build>
+                </image>
+              </images>
+            </configuration>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+              </execution>
+ 
+
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 </project>
