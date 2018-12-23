@@ -13,7 +13,7 @@ import javax.ejb.TimerConfig;
 import javax.ejb.TimerService;
 import javax.inject.Inject;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.goout.stalker.config.GlobalConfig;
 import org.goout.stalker.model.ArtistList;
 import org.goout.stalker.model.EventsByArtists;
 import org.goout.stalker.service.db.DBService;
@@ -32,23 +32,10 @@ public class GoOutTimerService {
 	@EJB
 	private GoOutService goOutService;
 
+	@Inject
+	private GlobalConfig config;
+
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getName());
-
-	@Inject
-	@ConfigProperty(name = "TIMER_INTERVAL")
-	private String interval;
-
-	@Inject
-	@ConfigProperty(name = "ARTIST_COL_NAME")
-	private String colName;
-
-	@Inject
-	@ConfigProperty(name = "GO_OUT_CITY")
-	private String city;
-
-	@Inject
-	@ConfigProperty(name = "TESTING")
-	private Boolean testing;
 
 	public GoOutTimerService() {
 	}
@@ -56,9 +43,9 @@ public class GoOutTimerService {
 	@Timeout
 	public void checkGoOutEvents(Timer timer) {
 		logger.info("Timer fired - connecting to GoOut");
-		ArtistList artists = dbService.findAllArtists(colName);
-		EventsByArtists events = goOutService.getEvents(artists, city);
-		
+		ArtistList artists = dbService.findAllArtists(config.ARTIST_COL_NAME());
+		EventsByArtists events = goOutService.getEvents(artists, config.GO_OUT_CITY());
+
 		// TODO : Send email with the events
 
 	}
@@ -68,11 +55,11 @@ public class GoOutTimerService {
 
 		ScheduleExpression se = new ScheduleExpression();
 		// For testing purposes, let's use SECONDS, in prod, let's use hours
-		if (testing) {
-			se.hour("*").minute("*").second("0/" + interval);
+		if (config.TESTING()) {
+			se.hour("*").minute("*").second("0/" + config.TIMER_INTERVAL());
 		} else {
 
-			se.hour("*/" + interval).minute("0").second(0);
+			se.hour("*/" + config.TIMER_INTERVAL()).minute("0").second(0);
 
 		}
 		timerService.createCalendarTimer(se, new TimerConfig("EJB timer service timeout at ", false));

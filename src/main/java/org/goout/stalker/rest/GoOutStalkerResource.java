@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.goout.stalker.config.GlobalConfig;
 import org.goout.stalker.model.ArtistList;
 import org.goout.stalker.model.EventsByArtists;
 import org.goout.stalker.service.db.DBService;
@@ -21,10 +22,6 @@ import org.goout.stalker.service.goout.GoOutService;
 @Path("/")
 public class GoOutStalkerResource {
 
-	@Inject
-	@ConfigProperty(name = "ARTIST_COL_NAME")
-	private String colName;
-
 	@EJB
 	private DBService dbService;
 
@@ -32,8 +29,7 @@ public class GoOutStalkerResource {
 	private GoOutService goOutService;
 
 	@Inject
-	@ConfigProperty(name = "GO_OUT_CITY")
-	private String city;
+	private GlobalConfig config;
 
 	@Path("/artists/add")
 	@POST
@@ -41,7 +37,7 @@ public class GoOutStalkerResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addArtist(Set<String> artists) {
 
-		dbService.addArtists(new ArtistList(artists), colName);
+		dbService.addArtists(new ArtistList(artists), config.ARTIST_COL_NAME());
 
 		return Response.ok().build();
 	}
@@ -50,7 +46,7 @@ public class GoOutStalkerResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllArtists() {
-		return Response.ok(dbService.findAllArtists(colName).getArtists()).build();
+		return Response.ok(dbService.findAllArtists(config.ARTIST_COL_NAME()).getArtists()).build();
 
 	}
 
@@ -59,8 +55,8 @@ public class GoOutStalkerResource {
 	@Path("/events/all")
 	public Response getAllEvents() {
 
-		ArtistList artists = dbService.findAllArtists(colName);
-		EventsByArtists events = goOutService.getEvents(artists, city);
+		ArtistList artists = dbService.findAllArtists(config.ARTIST_COL_NAME());
+		EventsByArtists events = goOutService.getEvents(artists, config.GO_OUT_CITY());
 
 		return Response.ok(events).build();
 	}
