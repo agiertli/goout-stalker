@@ -1,6 +1,7 @@
 src/main/java/org/goout/stalker/Playground.java
 src/main/resources/META-INF/microprofile-config.properties
 .metadata
+goout-stalker.env
 bin/
 tmp/
 target/
