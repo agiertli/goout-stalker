@@ -12,14 +12,21 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.goout.stalker.config.GlobalConfig;
 import org.goout.stalker.model.ArtistList;
 import org.goout.stalker.model.EventsByArtists;
 import org.goout.stalker.service.db.DBService;
 import org.goout.stalker.service.goout.GoOutService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+
 @Path("/")
+@Api(value = "/", tags = "goout-stalker-api")
+@SwaggerDefinition(tags = {
+	    @Tag(name = "goout-stalker-api", description = "Go Out Stalker REST API")
+	})
 public class GoOutStalkerResource {
 
 	@EJB

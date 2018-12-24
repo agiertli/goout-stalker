@@ -17,7 +17,7 @@ public class GlobalConfig {
 	private String EMAIL_INTRO = "Hi,\n here are some new events for you. \n";
 
 	@Inject
-	@ConfigProperty(name = "NOTIFICATIONS_ENABLED")
+	@ConfigProperty(name = "NOTIFICATIONS_ENABLED", defaultValue="false")
 	private String notifications;
 
 	@Inject
