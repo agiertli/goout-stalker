@@ -27,7 +27,49 @@ This will built the binaries and store them under target/goout-stalker-thorntail
 ```bash
 $ docker-compose up
 ```
+Now all it remain is to wait. If some events have been found, you should receive an email. Example:
 
+```json
+Hi,
+ here are some new events for you. 
+
+{
+    "Aurora":[
+        {
+            "city":"Prague",
+            "name":"Aurora + support: Vesna",
+            "date":"2019-01-17T20:00",
+            "url":"http://goout.net/en/concerts/aurora+support-vesna/xjgcd/+jojmj/",
+            "venue":"Forum Karlín"
+        }
+    ],
+    "Jessie":[
+        {
+            "city":"Prague",
+            "name":"Jessie J",
+            "date":"2019-04-23T20:00",
+            "url":"http://goout.net/en/concerts/jessie-j/ygsud/+hovgl/",
+            "venue":"Forum Karlín"
+        }
+    ],
+    "dné":[
+        {
+            "city":"Prague",
+            "name":"Barrandov a jeho slavné a prázdné vily",
+            "date":"2019-01-06T10:00",
+            "url":"http://goout.net/en/other-events/barrandov-a-jeho-slavne-a-prazdne-vily/ejwhd/+lmibl/",
+            "venue":"Filmové ateliéry"
+        },
+        {
+            "city":"Prague",
+            "name":"Slavné a prázdné vily Vinohrad a Vršovic",
+            "date":"2019-01-20T15:00",
+            "url":"http://goout.net/en/other-events/slavne-a-prazdne-vily-vinohrad-a-vrsovic/civud/+hadhl/",
+            "venue":"náměstí U Orionky"
+        }
+    ]
+}
+```
 ### Application properties
 
 There are other properties which can influence the the application besides those present in the goout-stalker.env. Here is their exhaustive list:
