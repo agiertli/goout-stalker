@@ -1,5 +1,7 @@
 GoOut-Stalker is microservice application which watches out for new events of your favourite artists in the selected city. If new events are found, the application will send you the email. The application checks for new events every 12 hours and the email it send only if the results are different from the previous scan. Currently only events published on goout.net website are being taken into the consideration.
 
+
+### Prerequisitse
 Since the docker image of this application is not (yet) published in the Docker Hub you will need to build it yourself. For this, the prerequisities are:
  - docker (engine 18.09.0+)
  - docker-compose (3.7+)
@@ -7,6 +9,7 @@ Since the docker image of this application is not (yet) published in the Docker 
  - jdk (8+)
 
 
+### Sample usage
  - Build the application
 ```bash
 $ ./build.sh
