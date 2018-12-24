@@ -90,4 +90,10 @@ Property name | Property explanation | Default Value
 TIMER_INTERVAL | Scanning interval in hours | 12 |
 |TESTING | When testing is set to true, the scanning interval shrinks from hours to seconds | false |
 
+### REST Specification
+The app is ready to be consumed by frontend app via REST API.
+Its specification can be found at:
+- http://localhost:8080/api/swagger.json
+swagger-ui
+- http://localhost:8080/index.html
 
