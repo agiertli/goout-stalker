@@ -27,3 +27,25 @@ This will built the binaries and store them under target/goout-stalker-thorntail
 ```bash
 $ docker-compose up
 ```
+
+### Application properties
+
+There are other properties which can influence the the application besides those present in the goout-stalker.env. Here is their exhaustive list:
+
+Property name | Property explanation | Default Value
+------------ | ------------- | -----------------
+| NOTIFICATIONS_ENABLED | When set to true, emails notifications will be enabled. This requires additional mail related properties to be configured properly | false |
+| SMTP_SERVER | Required when NOTIFICATIONS_ENABLED=true, i.e. smtp.gmail.com | N/A |
+| SMTP_PORT | Requires when NOTIFICATIONS_ENABLED=true , i.e. 465 | N/A |
+| MAIL_USERNAME | Required when NOTIFICATIONS_ENABLED=true, i.e. yourEmail@gmail.com | N/A |
+| MAIL_PASSWORD | Required when NOTIFICATIONS_ENABLED=true, password for "yourEmail@gmail.com" | N/A |
+| DB_PORT | Port for MongoDB, required | 27017 |
+| MONGODB_DATABASE | Name of the MongoDB| goout-stalker |
+| MONGODB_USER | User for MongoDB | goout-admin |
+| MONGODB_PASSWORD | Password for MongoDB user | password1! | 
+| DB_HOST | Mongo DB host | mongodb. Set automagically by docker networking |
+| GO_OUT_CITY | City you want to scan, possible values are: Prague, Brno, Ostrava, Pilsen, Berlin, Warsaw, Cracow, Wroclaw | N/A |
+TIMER_INTERVAL | Scanning interval in hours | 12 |
+|TESTING | When testing is set to true, the scanning interval shrinks from hours to seconds | false |
+
+
