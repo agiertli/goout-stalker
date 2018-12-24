@@ -1,0 +1,35 @@
+version: "3.7"
+
+x-common-variables: &common-variables
+  MONGODB_USER: goout-admin
+  MONGODB_DATABASE: goout-stalker
+  MONGODB_PASSWORD: password1!
+  MONGODB_ADMIN_PASSWORD: admin123
+
+services:
+  app:
+    env_file:
+      - goout-stalker.env
+    container_name: "goout-stalker"
+    image: "goout-stalker"
+    environment:
+      <<: *common-variables
+      WAIT_HOSTS: mongodb:27017
+      WAIT_HOSTS_TIMEOUT: 60
+      WAIT_SLEEP_INTERVAL: 5
+    depends_on:
+      - mongodb
+    ports:
+      - "8080:8080" # application
+
+  mongodb:
+    container_name: "mongodb"
+    image: "registry.access.redhat.com/rhscl/mongodb-36-rhel7"
+    environment: *common-variables
+    volumes:
+      - ./workdir/db/data/:/var/lib/mongodb/data            # data storage
+    ports:
+      - "27017:27017"
+networks:
+    default:
+        driver: bridge

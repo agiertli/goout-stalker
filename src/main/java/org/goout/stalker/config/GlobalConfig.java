@@ -37,23 +37,23 @@ public class GlobalConfig {
 	private String mailPassword;
 
 	@Inject
-	@ConfigProperty(name = "DB_PORT")
+	@ConfigProperty(name = "DB_PORT", defaultValue="27017")
 	private String port;
 
 	@Inject
-	@ConfigProperty(name = "DB_NAME")
+	@ConfigProperty(name = "MONGODB_DATABASE")
 	private String dbName;
 
 	@Inject
-	@ConfigProperty(name = "DB_USERNAME")
+	@ConfigProperty(name = "MONGODB_USER")
 	private String username;
 
 	@Inject
-	@ConfigProperty(name = "DB_PASSWORD")
+	@ConfigProperty(name = "MONGODB_PASSWORD")
 	private String password;
 
 	@Inject
-	@ConfigProperty(name = "DB_HOST")
+	@ConfigProperty(name = "DB_HOST", defaultValue="mongodb")
 	private String host;
 
 	@Inject

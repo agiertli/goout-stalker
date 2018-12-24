@@ -28,9 +28,10 @@ public class DBConnection {
 	private GlobalConfig config;
 
 	@PostConstruct
-	public void connect() {
+	public void init() {
 
 		logger.info("connecting to mongo db");
+		
 
 		MongoCredential credential = MongoCredential.createCredential(config.DB_USERNAME(), config.DB_NAME(),
 				config.DB_PASSWORD().toCharArray());
@@ -38,6 +39,16 @@ public class DBConnection {
 				MongoClientOptions.builder().build());
 		db = client.getDatabase(config.DB_NAME());
 
+	}
+	
+	public void connect() {
+		
+		logger.info("Trying to connect to DB");
+		MongoCredential credential = MongoCredential.createCredential(config.DB_USERNAME(), config.DB_NAME(),
+				config.DB_PASSWORD().toCharArray());
+		client = new MongoClient(new ServerAddress(config.DB_HOST(), Integer.valueOf(config.DB_PORT())), credential,
+				MongoClientOptions.builder().build());
+		db = client.getDatabase(config.DB_NAME());
 	}
 
 	@PreDestroy

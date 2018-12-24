@@ -29,6 +29,9 @@ public class DBInit {
 
 	@PostConstruct
 	public void init() {
+		
+		
+		
 		ArtistList artists = new ArtistList(new HashSet<String>(Arrays.asList(config.INIT_ARTIST_LIST().split(","))));
 		logger.info("DB Initialization with artists:" + artists);
 		Set<String> filteredArtists = new HashSet<String>();
