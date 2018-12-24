@@ -1,2 +1,2 @@
 cd goout-stalker-backend && mvn clean package -DskipTests
-docker build -t goout-stalker .
+docker build -t goout-stalker-backend .

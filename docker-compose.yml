@@ -11,7 +11,7 @@ services:
     env_file:
       - goout-stalker.env
     container_name: "goout-stalker"
-    image: "goout-stalker"
+    image: "goout-stalker-backend"
     environment:
       <<: *common-variables
       WAIT_HOSTS: mongodb:27017
