@@ -73,7 +73,7 @@ public class GlobalConfig {
 	private String initArtists;
 
 	@Inject
-	@ConfigProperty(name = "TESTING")
+	@ConfigProperty(name = "TESTING", defaultValue="false")
 	private Boolean testing;
 
 	public String NOTIFICATION_COL_NAME() {
