@@ -1,4 +1,4 @@
-GoOut-Stalker is microservice application which watches out for new events of your favourite artists in the selected city. If new events are found, the application will send you the email. The application checks for new events every 12 hours and the email it send only if the results are different from the previous scan. Currently only events published on goout.net website are being taken into the consideration.
+GoOut-Stalker is microservice application which watches out for new events of your favourite artists in the selected city. If new events are found, the application will send you the email. The application checks for new events every 12 hours and the email is send only if the results are different from the previous scan. Currently only events published on goout.net website are being taken into the consideration.
 
 
 ### Prerequisitse
@@ -90,4 +90,11 @@ Property name | Property explanation | Default Value
 TIMER_INTERVAL | Scanning interval in hours | 12 |
 |TESTING | When testing is set to true, the scanning interval shrinks from hours to seconds | false |
 
+### REST Specification
+The app is ready to be consumed by frontend app via REST API.
+Its specification can be found at:
+- http://localhost:8080/api/swagger.json
+
+swagger-ui
+- http://localhost:8080/index.html
 
