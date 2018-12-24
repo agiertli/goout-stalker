@@ -94,6 +94,7 @@ TIMER_INTERVAL | Scanning interval in hours | 12 |
 The app is ready to be consumed by frontend app via REST API.
 Its specification can be found at:
 - http://localhost:8080/api/swagger.json
+
 swagger-ui
 - http://localhost:8080/index.html
 
