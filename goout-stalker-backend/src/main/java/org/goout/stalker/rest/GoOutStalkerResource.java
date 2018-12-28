@@ -21,6 +21,8 @@ import org.goout.stalker.model.EventsByArtists;
 import org.goout.stalker.service.db.DBService;
 import org.goout.stalker.service.goout.GoOutService;
 import org.goout.stalker.service.goout.GoOutTimerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,6 +33,8 @@ import io.swagger.annotations.Tag;
 @Api(value = "/", tags = "goout-stalker-api")
 @SwaggerDefinition(tags = { @Tag(name = "goout-stalker-api", description = "Go Out Stalker REST API") })
 public class GoOutStalkerResource {
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
 	@EJB
 	private DBService dbService;
@@ -98,7 +102,7 @@ public class GoOutStalkerResource {
 	public Response startMailNotifications(EmailConfig emailConfig) {
 
 		goOutTimerService.stop();
-
+		
 		config.setMailInterval(emailConfig.getInterval());
 		config.setMailPswd(emailConfig.getPassword());
 		config.setMailUsername(emailConfig.getUsername());

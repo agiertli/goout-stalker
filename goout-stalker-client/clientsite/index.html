@@ -169,6 +169,14 @@ function getEmailConfig() {
     } 
 
     function stopNotifications() {
+
+        $("#smtpServer").val("");
+        $("#smtpPort").val("");
+        $("#email").val("");
+        $("#password").val("");
+        $("#interval").val("");
+
+
         var url = BASE_URL+EMAIL_STOP;
             fetch(url, {
         method: 'post',
@@ -261,7 +269,7 @@ function getAllEvents() {
                                 <input type="Email" class="form-control" id="email" placeholder="youremail@host.com">
                             </div>
                             <div class="form-group">
-                                <label for="email">Password</label>
+                                <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" placeholder="your email password">
                                 <div class="form-group">
                                     <label for="interval">Notification interval</label>
