@@ -14,6 +14,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.goout.stalker.JSONUtil;
 import org.goout.stalker.config.GlobalConfig;
+import org.goout.stalker.model.EmailConfig;
 import org.goout.stalker.model.EventsByArtists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,6 +62,42 @@ public class EmailService {
 		} catch (Exception e) {
 			logger.error(e.toString());
 		}
+	}
+
+	public void testConnection(EmailConfig emailConfig) throws ConnectionError {
+
+		try {
+
+			String username = emailConfig.getUsername();
+			String password = emailConfig.getPassword();
+
+			Properties props = new Properties();
+			props.put("mail.smtp.host", emailConfig.getSmtpServer());
+			props.put("mail.smtp.socketFactory.port", emailConfig.getSmtpPort());
+			props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.port", emailConfig.getSmtpPort());
+			Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication(username, password);
+				}
+			});
+
+			Message message = new MimeMessage(session);
+			// message.set
+			message.setFrom(new InternetAddress(emailConfig.getUsername()));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailConfig.getUsername()));
+			message.setSubject("whatever");
+			message.setText("whatever");
+
+			Transport.send(message);
+
+		} catch (Exception e) {
+
+			throw new ConnectionError("Wasn't possible to establish connection due to:" + e.getMessage());
+
+		}
+
 	}
 
 }

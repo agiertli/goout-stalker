@@ -146,6 +146,7 @@ function getEmailConfig() {
 
         var url = BASE_URL+EMAIL_START;
 
+
         var emailConfig = {
     smtpServer: $('#smtpServer').val(),
     smtpPort: $('#smtpPort').val(),
@@ -161,10 +162,35 @@ function getEmailConfig() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(emailConfig)
-    }) .then(response => {
+    })
+     .then((resp) => resp.json())
+        .then(function(data) {
+
+var e = data;
+            console.log(data);
+
+            if (e.hasOwnProperty('error')) {
+
+var start="<div class=\"alert alert-warning alert-dismissible fade show\" role=\"alert\"><strong>Error Occurred: </strong>";
+
+var text = data.error;
+
+var finish = "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button></div>"
+
+$("#error").append(start+text+finish);
+
+}
         getEmailConfig();
 
-})
+        })
+
+      .catch(function(error) {
+
+        var d = error;
+        console.log(d);
+
+
+        });
 
     } 
 
@@ -213,6 +239,7 @@ function getAllEvents() {
 <body>
     <h3 style="text-align:center">goout.net Stalker</h3>
     <div class="container">
+        <div id="error"></div>
         <script src="env.js"></script>
         <div class="row">
             <div class="col">

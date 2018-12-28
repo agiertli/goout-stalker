@@ -13,12 +13,15 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.goout.stalker.config.GlobalConfig;
 import org.goout.stalker.model.ArtistList;
 import org.goout.stalker.model.EmailConfig;
 import org.goout.stalker.model.EventsByArtists;
 import org.goout.stalker.service.db.DBService;
+import org.goout.stalker.service.email.ConnectionError;
+import org.goout.stalker.service.email.EmailService;
 import org.goout.stalker.service.goout.GoOutService;
 import org.goout.stalker.service.goout.GoOutTimerService;
 import org.slf4j.Logger;
@@ -33,7 +36,7 @@ import io.swagger.annotations.Tag;
 @Api(value = "/", tags = "goout-stalker-api")
 @SwaggerDefinition(tags = { @Tag(name = "goout-stalker-api", description = "Go Out Stalker REST API") })
 public class GoOutStalkerResource {
-	
+
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
 	@EJB
@@ -41,6 +44,9 @@ public class GoOutStalkerResource {
 
 	@EJB
 	private GoOutService goOutService;
+
+	@EJB
+	private EmailService emailService;
 
 	@Inject
 	private GlobalConfig config;
@@ -99,10 +105,19 @@ public class GoOutStalkerResource {
 	@POST
 	@Path("/email/start")
 	@ApiOperation(value = "Configure email notifications", notes = "All scheduled emails are cancelled and reschedueld with the new configuration")
-	public Response startMailNotifications(EmailConfig emailConfig) {
+	public Response startMailNotifications(EmailConfig emailConfig) throws ConnectionError {
+
+		try {
+			emailService.testConnection(emailConfig);
+		} catch (ConnectionError e) {
+
+			e.printStackTrace();
+			return Response.status(Status.BAD_REQUEST).entity("{\"error\":" + "\"" + "Wrong Email Configuration provided!" + "\"}").build();
+
+		}
 
 		goOutTimerService.stop();
-		
+
 		config.setMailInterval(emailConfig.getInterval());
 		config.setMailPswd(emailConfig.getPassword());
 		config.setMailUsername(emailConfig.getUsername());
@@ -113,7 +128,7 @@ public class GoOutStalkerResource {
 
 		goOutTimerService.init();
 
-		return Response.ok().build();
+		return Response.ok("{\"status\" : \"ok\" }").build();
 	}
 
 	@POST
