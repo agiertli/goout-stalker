@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport">
+    <title>Go Out Stalker</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="main.css">
+</head>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<style>
+    .vl {
+  border-left: 6px solid green;
+  height: 500px;
+}
+</style>
+<script>
+    function getArtists() {
+
+
+    const url = BASE_URL+GET_ALL_ARTISTS;
+    fetch(url)
+        .then((resp) => resp.json())
+        .then(function(data) {
+              let ul = document.getElementById(ARTISTS_SELECT_ELEMENT_ID);
+              ul.innerHTML = '';
+            let artists = data;
+            return artists.map(function(artists) {
+
+                var op = new Option();
+                op.value = artists;
+                op.text = artists;
+                document.getElementById(ARTISTS_SELECT_ELEMENT_ID).options.add(op);
+
+
+            })
+        })
+        .catch(function(error) {
+            console.log(JSON.stringify(error));
+        });
+
+
+}
+function deleteArtist() {
+
+    const selected = document.querySelectorAll('#artists option:checked');
+    let values = Array.from(selected).map(el => el.value);
+
+    const url = BASE_URL+ARTISTS;
+
+    fetch(url, {
+        method: 'delete',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(values)
+    }) .then(response => {
+//remove it from the list
+        getArtists();
+
+})
+
+}
+
+function createNode(element) {
+    return document.createElement(element);
+}
+
+function append(parent, el) {
+    return parent.appendChild(el);
+}
+
+function addArtists() {
+    var artistList = document.getElementById("artistList").value;
+    console.log(artistList);
+
+    var artistArray = artistList.split(",");
+
+    for (var i = 0; i < artistArray.length; i++) {
+        artistArray[i] = artistArray[i].trim();
+
+}
+
+    const url = BASE_URL+ARTISTS;
+
+    fetch(url, {
+        method: 'put',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(artistArray)
+    }) .then(response => {
+        getArtists();
+
+})
+
+}
+
+function getEmailConfig() {
+    var url = BASE_URL+EMAIL_CONFIG;
+
+    $('#enabled').remove();    
+    $('#enableNotification').remove();
+    $('#disableNotificationButton').remove();
+
+
+
+    //  <button type="submit" id="enableNotification" class="btn btn-primary">Submit</button>
+
+        fetch(url)
+        .then((resp) => resp.json())
+        .then(function(data) {
+           let emailConfig = data;
+           let enabled = emailConfig.enabled;
+
+           if (enabled == true) {
+
+            $( "#enabledNotificiation" ).append( "<p id =\"enabled\">Email notifications are currently enabled with the following configuration:</p>" );
+
+             $("#interval").val(emailConfig.interval);
+             $("#smtpServer").val(emailConfig.smtpServer);  
+             $("#smtpPort").val(emailConfig.smtpPort);  
+             $("#email").val(emailConfig.username); 
+             $("#gooutcity").val(emailConfig.city); 
+
+                $("#buttons").append("<button  onClick=\"stopNotifications();\" type=\"button\" id=\"disableNotificationButton\" class=\"btn btn-danger\">Disable Notifications</button>");
+
+           } else {
+            $( "#enabledNotificiation" ).append( "<p id =\"enabled\">Email notifications are currently disabled</p>" );
+            $("#buttons").append("<button  onClick=\"enableNotifications();\" type=\"button\" id=\"enableNotification\" class=\"btn btn-success\">Enable Notifications</button>");
+
+
+           }
+
+        //  $('#allEvents').val(printMe);      
+        })
+        .catch(function(error) {
+            console.log(JSON.stringify(error));
+        });
+
+
+} 
+
+    function enableNotifications () {
+
+        var url = BASE_URL+EMAIL_START;
+
+        var emailConfig = {
+    smtpServer: $('#smtpServer').val(),
+    smtpPort: $('#smtpPort').val(),
+    username: $('#email').val(),
+    password: $('#password').val(),
+    interval: $('#interval').val(),
+    city: $('#gooutcity').val(),
+};
+
+    fetch(url, {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(emailConfig)
+    }) .then(response => {
+        getEmailConfig();
+
+})
+
+    } 
+
+    function stopNotifications() {
+        var url = BASE_URL+EMAIL_STOP;
+            fetch(url, {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }) .then(response => {
+        getEmailConfig();
+
+})
+    }
+
+
+function getAllEvents() {
+
+ const url = BASE_URL+GET_ALL_EVENTS;
+    fetch(url)
+        .then((resp) => resp.json())
+        .then(function(data) {
+            let events = data.allEvents;
+           var printMe =  JSON.stringify(events, null, 2);
+
+            $('#allEvents').val(printMe);      
+        })
+        .catch(function(error) {
+            console.log(JSON.stringify(error));
+        });
+
+}
+
+
+</script>
+
+<body>
+    <h3 style="text-align:center">goout.net Stalker</h3>
+    <div class="container">
+        <script src="env.js"></script>
+        <div class="row">
+            <div class="col">
+                <h4>Add new artists for tracking</h4>
+                <form>
+                    <div class="form-group">
+                        <label for="artistsToAdd">Comma separated list of artists</label>
+                        <input type="artistList" class="form-control" id="artistList" aria-describedby="artistList" placeholder="Enter list of artists">
+                        <small id="artistHelp" class="form-text text-muted">i.e. Madonna, Beyoncé</small>
+                    </div>
+                    <button type="button" onClick="addArtists();" class="btn btn-primary">Add artists</button>
+                </form>
+            </div>
+            <div class="col">
+                <h4>Artists currently being tracked</h4>
+                <div id="trackedArtists">
+                    <form>
+                        <select class="form-control input-sm w-auto" id="artists" name="artists" multiple>
+                        </select></br>
+                        <button type="button" class="btn btn-danger" onClick="deleteArtist();">Delete Artists</button>
+                    </form>
+                </div>
+            </div>
+            <div class="w-100">
+                <hr>
+            </div>
+            </br></br>
+            <div class="col">
+                <h4>Retrieve events</h4>
+                <div id="retrieveEventsCollapse">
+                    <form>
+                        <textarea readonly rows="10" class="form-control" id="allEvents"></textarea>
+                        </br>
+                        <button type="button" onClick="getAllEvents();" class="btn btn-primary">Display events</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col">
+                <h4>Configure Email Notifications</h4>
+                <div id="emailCollapse">
+                    <div id="emailConfigDiv">
+                        <div id="enabledNotificiation"></div>
+                        <form>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">SMTP Server</label>
+                                <input type="text" class="form-control" id="smtpServer" aria-describedby="emailHelp" placeholder="i.e. smtp.gmail.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="smtpPort">SMTP Port</label>
+                                <input type="number" class="form-control" id="smtpPort" placeholder="465">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="Email" class="form-control" id="email" placeholder="youremail@host.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Password</label>
+                                <input type="password" class="form-control" id="password" placeholder="your email password">
+                                <div class="form-group">
+                                    <label for="interval">Notification interval</label>
+                                    <input type="number" class="form-control" id="interval" placeholder="12">
+                                    <small id="intervalHelp" class="form-text text-muted">The value is in hours. If the no new events will be discovered from the previous scan, then no email will be sent</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="sel1">Select city:</label>
+                                <select class="form-control" id="gooutcity">
+                                    <option value="Prague">Prague</option>
+                                    <option value="Brno">Brno</option>
+                                    <option value="Ostrava">Ostrava</option>
+                                    <option value="Pilsen">Pilsen</option>
+                                    <option value="Berlin">Berlin</option>
+                                    <option value="Warsaw">Warsaw</option>
+                                    <option value="Cracow">Cracow</option>
+                                    <option value="Wroclav">Wroclav</option>
+                                </select>
+                            </div>
+                            <div id="buttons">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <script>
+            getArtists();
+            getEmailConfig();
+            </script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+        </div>
+</body>
+
+</html>

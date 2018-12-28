@@ -10,14 +10,16 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @ApplicationScoped
 public class GlobalConfig {
 
-	private String URL_BASE = "https://goout.net/services/feeder/v1/events.json?source=goout&keywords=%s&language=en&unapproved=false&clearDomain=true";
-	private String GOOUT_HOMEPAGE = "http://goout.net";
-	private DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-	private String mail_subject = "Go Out Stalker Notification";
-	private String EMAIL_INTRO = "Hi,\n here are some new events for you. \n";
+	private final String URL_BASE = "https://goout.net/services/feeder/v1/events.json?source=goout&keywords=%s&language=en&unapproved=false&clearDomain=true";
+	private final String GOOUT_HOMEPAGE = "http://goout.net";
+	private final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	private final String mail_subject = "Go Out Stalker Notification";
+	private final String EMAIL_INTRO = "Hi,\n here are some new events for you. \n";
+	private final String EMAIL_C0L = "emailConfig";
 
+	private final String EMAIL_CONFIG_ID = "unique-email-config-id";
 	@Inject
-	@ConfigProperty(name = "NOTIFICATIONS_ENABLED", defaultValue="false")
+	@ConfigProperty(name = "NOTIFICATIONS_ENABLED", defaultValue = "false")
 	private String notifications;
 
 	@Inject
@@ -37,7 +39,7 @@ public class GlobalConfig {
 	private String mailPassword;
 
 	@Inject
-	@ConfigProperty(name = "DB_PORT", defaultValue="27017")
+	@ConfigProperty(name = "DB_PORT", defaultValue = "27017")
 	private String port;
 
 	@Inject
@@ -53,7 +55,7 @@ public class GlobalConfig {
 	private String password;
 
 	@Inject
-	@ConfigProperty(name = "DB_HOST", defaultValue="mongodb")
+	@ConfigProperty(name = "DB_HOST", defaultValue = "mongodb")
 	private String host;
 
 	@Inject
@@ -73,11 +75,21 @@ public class GlobalConfig {
 	private String initArtists;
 
 	@Inject
-	@ConfigProperty(name = "TESTING", defaultValue="false")
+	@ConfigProperty(name = "TESTING", defaultValue = "false")
 	private Boolean testing;
 
 	public String NOTIFICATION_COL_NAME() {
 		return notificationColName;
+	}
+
+	public String EMAIL_CONFIG_ID() {
+
+		return EMAIL_CONFIG_ID;
+	}
+
+	public String EMAIL_C0L() {
+
+		return EMAIL_C0L;
 	}
 
 	public String EMAIL_INTRO() {
@@ -86,6 +98,11 @@ public class GlobalConfig {
 
 	public String MAIL_SUBJECT() {
 		return mail_subject;
+	}
+
+	public void setnotifications(String enabled) {
+
+		this.notifications = enabled;
 	}
 
 	public String NOTIFICATIONS_ENABLED() {
@@ -113,6 +130,24 @@ public class GlobalConfig {
 
 	public String DB_USERNAME() {
 		return username;
+	}
+
+	public void setSmtpHost(String smtpServer) {
+
+		this.smtp_server = smtpServer;
+	}
+
+	public void setSmtpPort(String port) {
+		this.smtp_port = port;
+	}
+
+	public void setMailUsername(String username) {
+
+		this.mailUser = username;
+	}
+
+	public void setMailPswd(String password) {
+		this.mailPassword = password;
 	}
 
 	public String DB_PASSWORD() {
@@ -144,6 +179,10 @@ public class GlobalConfig {
 		return interval;
 	}
 
+	public void setMailInterval(String mailInterval) {
+		this.interval = mailInterval;
+	}
+
 	public String URL_BASE() {
 		return URL_BASE;
 	}
@@ -158,6 +197,10 @@ public class GlobalConfig {
 
 	public String GO_OUT_CITY() {
 		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public String ARTIST_COL_NAME() {

@@ -101,6 +101,8 @@ public class GoOutTimerService {
 			logger.info("Email notifications disabled");
 		}
 	}
+	
+	
 
 	@PreDestroy
 	public void stop() {

@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -15,9 +16,11 @@ import javax.ws.rs.core.Response;
 
 import org.goout.stalker.config.GlobalConfig;
 import org.goout.stalker.model.ArtistList;
+import org.goout.stalker.model.EmailConfig;
 import org.goout.stalker.model.EventsByArtists;
 import org.goout.stalker.service.db.DBService;
 import org.goout.stalker.service.goout.GoOutService;
+import org.goout.stalker.service.goout.GoOutTimerService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,6 +40,9 @@ public class GoOutStalkerResource {
 
 	@Inject
 	private GlobalConfig config;
+
+	@EJB
+	private GoOutTimerService goOutTimerService;
 
 	@Path("/artists")
 	@PUT
@@ -84,6 +90,62 @@ public class GoOutStalkerResource {
 		EventsByArtists events = goOutService.getEvents(artists, config.GO_OUT_CITY());
 
 		return Response.ok(events).build();
+	}
+
+	@POST
+	@Path("/email/start")
+	@ApiOperation(value = "Configure email notifications", notes = "All scheduled emails are cancelled and reschedueld with the new configuration")
+	public Response startMailNotifications(EmailConfig emailConfig) {
+
+		goOutTimerService.stop();
+
+		config.setMailInterval(emailConfig.getInterval());
+		config.setMailPswd(emailConfig.getPassword());
+		config.setMailUsername(emailConfig.getUsername());
+		config.setSmtpPort(emailConfig.getSmtpPort());
+		config.setSmtpHost(emailConfig.getSmtpServer());
+		config.setnotifications("true");
+		config.setCity(emailConfig.getCity());
+
+		goOutTimerService.init();
+
+		return Response.ok().build();
+	}
+
+	@POST
+	@Path("/email/stop")
+	@ApiOperation(value = "Cancels all schedueld emails", notes = "All scheduled emails are cancelled and reschedueld with the new configuration")
+
+	public Response stopEmails() {
+		config.setnotifications("false");
+		goOutTimerService.stop();
+		return Response.ok().build();
+	}
+
+	@GET
+	@Path("/email")
+	@ApiOperation(value = "Returns current email config", response = EmailConfig.class)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCurrentEmailConfig() {
+
+		Boolean enabled = Boolean.valueOf(config.NOTIFICATIONS_ENABLED());
+
+		EmailConfig email = new EmailConfig();
+
+		if (!enabled) {
+			email = EmailConfig.builder().withEnabled(enabled).build();
+
+			return Response.ok(email).build();
+
+		} else {
+			email = EmailConfig.builder().withEnabled(enabled).withSmtpPort(config.SMTP_PORT())
+					.withSmtpServer(config.SMTP_SERVER()).withUsername(config.MAIL_USERNAME())
+					.withInterval(config.TIMER_INTERVAL()).withCity(config.GO_OUT_CITY()).build();
+
+			return Response.ok(email).build();
+
+		}
+
 	}
 
 }

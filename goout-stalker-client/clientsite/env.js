@@ -1,0 +1,9 @@
+var BASE_URL="http://localhost:8080/api";
+var GET_ALL_ARTISTS="/artists/all";
+var ARTISTS = "/artists";
+var ARTISTS_SELECT_ELEMENT_ID="artists";
+var GET_ALL_EVENTS="/events/all";
+var EVENTS_TEXT_AREA_ID="allEvents";
+var EMAIL_CONFIG="/email"
+var EMAIL_START="/email/start";
+var EMAIL_STOP="/email/stop";

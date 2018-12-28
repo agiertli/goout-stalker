@@ -31,6 +31,7 @@ public class DBInit {
 	public void init() {
 		
 		
+		//Persist the initial artists passed via env/system property
 		
 		ArtistList artists = new ArtistList(new HashSet<String>(Arrays.asList(config.INIT_ARTIST_LIST().split(","))));
 		logger.info("DB Initialization with artists:" + artists);
@@ -46,6 +47,7 @@ public class DBInit {
 
 		if (!filteredArtists.isEmpty())
 			dbService.addArtists(new ArtistList(filteredArtists), config.ARTIST_COL_NAME());
+	
 
 	}
 
