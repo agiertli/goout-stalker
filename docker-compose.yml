@@ -24,7 +24,9 @@ services:
 
   client:
     container_name: "nginx-goout-client"
-    image: "goout-stalker-client"
+    image: "nginx"
+    volumes:
+      - ./goout-stalker-client/clientsite:/usr/share/nginx/html
     ports:
       - "80:80"  
     depends_on:
