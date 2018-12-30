@@ -100,13 +100,8 @@ function addArtists() {
 function getEmailConfig() {
     var url = BASE_URL+EMAIL_CONFIG;
 
-    $('#enabled').remove();    
-    $('#enableNotification').remove();
-    $('#disableNotificationButton').remove();
+    $('#enabled').text("");    
 
-
-
-    //  <button type="submit" id="enableNotification" class="btn btn-primary">Submit</button>
 
         fetch(url)
         .then((resp) => resp.json())
@@ -116,7 +111,9 @@ function getEmailConfig() {
 
            if (enabled == true) {
 
-            $( "#enabledNotificiation" ).append( "<p id =\"enabled\">Email notifications are currently enabled with the following configuration:</p>" );
+$("#enabled").text("Email notifications are currently enabled with the following configuration:");
+console.log("notifications are enabled");
+         //   $( "#enabledNotificiation" ).append( "<p id =\"enabled\">Email notifications are currently enabled with the following configuration:</p>" );
 
              $("#interval").val(emailConfig.interval);
              $("#smtpServer").val(emailConfig.smtpServer);  
@@ -124,11 +121,25 @@ function getEmailConfig() {
              $("#email").val(emailConfig.username); 
              $("#gooutcity").val(emailConfig.city); 
 
-                $("#buttons").append("<button  onClick=\"stopNotifications();\" type=\"button\" id=\"disableNotificationButton\" class=\"btn btn-danger\">Disable Notifications</button>");
+              $("#emailButton").attr("onclick","stopNotifications()");
+              $("#emailButton").removeClass("btn-success").addClass("btn-danger");
+              $("#emailButton").text("Disable Notifications");
+
+
+
+                // $("#buttons").append("<button  onClick=\"stopNotifications();\" type=\"button\" id=\"disableNotificationButton\" class=\"btn btn-danger\">Disable Notifications</button>");
 
            } else {
-            $( "#enabledNotificiation" ).append( "<p id =\"enabled\">Email notifications are currently disabled</p>" );
-            $("#buttons").append("<button  onClick=\"enableNotifications();\" type=\"button\" id=\"enableNotification\" class=\"btn btn-success\">Enable Notifications</button>");
+
+            $("#enabled").text("Email notifications are currently disabled");
+            console.log("notifications are disabled");
+
+              $("#emailButton").attr("onclick","enableNotifications()");
+              $("#emailButton").removeClass("btn-danger").addClass("btn-success");
+              $("#emailButton").text("Enable Notifications");
+
+          
+         
 
 
            }
@@ -281,7 +292,7 @@ function getAllEvents() {
                 <h4>Configure Email Notifications</h4>
                 <div id="emailCollapse">
                     <div id="emailConfigDiv">
-                        <div id="enabledNotificiation"></div>
+                        <div id="enabledNotificiation"><p id="enabled"></p></div>
                         <form>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">SMTP Server</label>
@@ -318,6 +329,7 @@ function getAllEvents() {
                                 </select>
                             </div>
                             <div id="buttons">
+                                <button id="emailButton" type="button" class="btn"/>
                             </div>
                         </form>
                     </div>
