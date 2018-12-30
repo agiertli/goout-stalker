@@ -113,7 +113,6 @@ function getEmailConfig() {
 
 $("#enabled").text("Email notifications are currently enabled with the following configuration:");
 console.log("notifications are enabled");
-         //   $( "#enabledNotificiation" ).append( "<p id =\"enabled\">Email notifications are currently enabled with the following configuration:</p>" );
 
              $("#interval").val(emailConfig.interval);
              $("#smtpServer").val(emailConfig.smtpServer);  
@@ -125,10 +124,6 @@ console.log("notifications are enabled");
               $("#emailButton").removeClass("btn-success").addClass("btn-danger");
               $("#emailButton").text("Disable Notifications");
 
-
-
-                // $("#buttons").append("<button  onClick=\"stopNotifications();\" type=\"button\" id=\"disableNotificationButton\" class=\"btn btn-danger\">Disable Notifications</button>");
-
            } else {
 
             $("#enabled").text("Email notifications are currently disabled");
@@ -136,15 +131,9 @@ console.log("notifications are enabled");
 
               $("#emailButton").attr("onclick","enableNotifications()");
               $("#emailButton").removeClass("btn-danger").addClass("btn-success");
-              $("#emailButton").text("Enable Notifications");
-
-          
-         
-
-
+              $("#emailButton").text("Enable Notifications");        
            }
 
-        //  $('#allEvents').val(printMe);      
         })
         .catch(function(error) {
             console.log(JSON.stringify(error));
@@ -157,8 +146,7 @@ console.log("notifications are enabled");
 
         var url = BASE_URL+EMAIL_START;
 
-
-        var emailConfig = {
+    var emailConfig = {
     smtpServer: $('#smtpServer').val(),
     smtpPort: $('#smtpPort').val(),
     username: $('#email').val(),
@@ -292,7 +280,9 @@ function getAllEvents() {
                 <h4>Configure Email Notifications</h4>
                 <div id="emailCollapse">
                     <div id="emailConfigDiv">
-                        <div id="enabledNotificiation"><p id="enabled"></p></div>
+                        <div id="enabledNotificiation">
+                            <p id="enabled"></p>
+                        </div>
                         <form>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">SMTP Server</label>
@@ -329,9 +319,9 @@ function getAllEvents() {
                                 </select>
                             </div>
                             <div id="buttons">
-                                <button id="emailButton" type="button" class="btn"/>
+                                <button id="emailButton" type="button" class="btn" />
                             </div>
-                        </form>
+                        </form> f
                     </div>
                 </div>
             </div>
