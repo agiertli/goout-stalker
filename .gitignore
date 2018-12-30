@@ -1,6 +1,7 @@
 src/main/java/org/goout/stalker/Playground.java
 .metadata
 goout-stalker-client/.DS_Store
+goout-stalker-client/clientsite/.DS_Store
 goout-stalker.env
 bin/
 tmp/
