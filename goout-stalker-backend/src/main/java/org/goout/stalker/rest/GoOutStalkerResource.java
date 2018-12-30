@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.goout.stalker.JSONUtil;
 import org.goout.stalker.config.GlobalConfig;
 import org.goout.stalker.model.ArtistList;
 import org.goout.stalker.model.EmailConfig;
@@ -38,6 +39,9 @@ import io.swagger.annotations.Tag;
 public class GoOutStalkerResource {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+	
+	@EJB
+	private JSONUtil jsonUtil;
 
 	@EJB
 	private DBService dbService;
@@ -99,7 +103,7 @@ public class GoOutStalkerResource {
 		ArtistList artists = dbService.findAllArtists(config.ARTIST_COL_NAME());
 		EventsByArtists events = goOutService.getEvents(artists, config.GO_OUT_CITY());
 
-		return Response.ok(events).build();
+		return Response.ok(jsonUtil.convertToJson(events)).build();
 	}
 
 	@POST

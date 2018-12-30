@@ -233,7 +233,7 @@ function getAllEvents() {
     fetch(url)
         .then((resp) => resp.json())
         .then(function(data) {
-            let events = data.allEvents;
+            let events = data;
            var printMe =  JSON.stringify(events, null, 2);
 
             $('#allEvents').val(printMe);     
