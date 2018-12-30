@@ -100,9 +100,6 @@ function addArtists() {
 function getEmailConfig() {
     var url = BASE_URL+EMAIL_CONFIG;
 
-    $('#enabled').text("");    
-
-
         fetch(url)
         .then((resp) => resp.json())
         .then(function(data) {
@@ -144,6 +141,11 @@ console.log("notifications are enabled");
 
     function enableNotifications () {
 
+        document.getElementById("overlay").style.display = "block";
+      $("#overlay").append("<div class=\"loader content\"></div");
+
+
+
         var url = BASE_URL+EMAIL_START;
 
     var emailConfig = {
@@ -181,6 +183,9 @@ $("#error").append(start+text+finish);
 }
         getEmailConfig();
 
+                document.getElementById("overlay").style.display = "none";
+
+
         })
 
       .catch(function(error) {
@@ -217,6 +222,11 @@ $("#error").append(start+text+finish);
 
 function getAllEvents() {
 
+      document.getElementById("overlay").style.display = "block";
+      $("#overlay").append("<div class=\"loader content\"></div");
+
+
+
  const url = BASE_URL+GET_ALL_EVENTS;
     fetch(url)
         .then((resp) => resp.json())
@@ -224,7 +234,9 @@ function getAllEvents() {
             let events = data.allEvents;
            var printMe =  JSON.stringify(events, null, 2);
 
-            $('#allEvents').val(printMe);      
+            $('#allEvents').val(printMe);     
+                  document.getElementById("overlay").style.display = "none";
+ 
         })
         .catch(function(error) {
             console.log(JSON.stringify(error));
@@ -232,12 +244,28 @@ function getAllEvents() {
 
 }
 
+function on() {
+  document.getElementById("overlay").style.display = "block";
+}
+
+function off() {
+  document.getElementById("overlay").style.display = "none";
+}
+
+
+
 
 </script>
 
 <body>
+
+      <div id="overlay" onclick="off()"></div>
+
+
+
     <h3 style="text-align:center">goout.net Stalker</h3>
-    <div class="container">
+
+    <div id="main" class="container">
         <div id="error"></div>
         <script src="env.js"></script>
         <div class="row">
@@ -290,7 +318,7 @@ function getAllEvents() {
                             </div>
                             <div class="form-group">
                                 <label for="smtpPort">SMTP Port</label>
-                                <input type="number" class="form-control" id="smtpPort" placeholder="465">
+                                <input type="number" class="form-control" id="smtpPort" placeholder="i.e. 465">
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
@@ -321,7 +349,7 @@ function getAllEvents() {
                             <div id="buttons">
                                 <button id="emailButton" type="button" class="btn" />
                             </div>
-                        </form> f
+                        </form> 
                     </div>
                 </div>
             </div>
