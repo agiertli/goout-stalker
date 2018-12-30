@@ -261,10 +261,9 @@ function getAllEvents() {
     <h3 style="text-align:center">goout.net Stalker</h3>
 
     <div id="main" class="container">
-        <div id="error"></div>
         <script src="env.js"></script>
         <div class="row">
-            <div class="col">
+            <div class="col-7">
                 <h4>Add new artists for tracking</h4>
                 <form>
                     <div class="form-group">
@@ -275,7 +274,7 @@ function getAllEvents() {
                     <button type="button" onClick="addArtists();" class="btn btn-primary">Add artists</button>
                 </form>
             </div>
-            <div class="col">
+            <div class="col-5">
                 <h4>Artists currently being tracked</h4>
                 <div id="trackedArtists">
                     <form>
@@ -289,7 +288,7 @@ function getAllEvents() {
                 <hr>
             </div>
             </br></br>
-            <div class="col">
+            <div class="col-7">
                 <h4>Retrieve events</h4>
                 <div id="retrieveEventsCollapse">
                     <form>
@@ -299,8 +298,10 @@ function getAllEvents() {
                     </form>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-5">
                 <h4>Configure Email Notifications</h4>
+                        <div id="error"></div>
+
                 <div id="emailCollapse">
                     <div id="emailConfigDiv">
                         <div id="enabledNotificiation">
