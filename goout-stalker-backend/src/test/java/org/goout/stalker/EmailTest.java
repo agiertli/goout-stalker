@@ -21,7 +21,7 @@ public class EmailTest {
 	@Test(expected = ConnectionError.class)
 	public void testWrongConnectionDetailsEmail() throws ConnectionError {
 
-		EmailConfig config = EmailConfig.builder().withPassword("wrongPassword").withUsername("wrongEmail@gmail.com")
+		EmailConfig config = EmailConfig.builder().withPassword("wrongPassword").withUsername("r@gmail.com")
 				.withSmtpPort("465").withSmtpServer("smtp.gmail.com").build();
 
 		EmailService service = new EmailService();

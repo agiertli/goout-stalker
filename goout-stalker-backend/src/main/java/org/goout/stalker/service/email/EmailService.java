@@ -84,11 +84,12 @@ public class EmailService {
 			});
 
 			Transport transport = session.getTransport("smtp");
-			transport.connect(emailConfig.getSmtpServer(), Integer.valueOf(emailConfig.getSmtpServer()), username,
+			transport.connect(emailConfig.getSmtpServer(), Integer.valueOf(emailConfig.getSmtpPort()), username,
 					password);
 			transport.close();
 		} catch (Exception e) {
 
+			e.printStackTrace();
 			throw new ConnectionError("Wasn't possible to establish connection due to:" + e.getMessage());
 
 		}
