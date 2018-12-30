@@ -83,15 +83,10 @@ public class EmailService {
 				}
 			});
 
-			Message message = new MimeMessage(session);
-			// message.set
-			message.setFrom(new InternetAddress(emailConfig.getUsername()));
-			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailConfig.getUsername()));
-			message.setSubject("whatever");
-			message.setText("whatever");
-
-			Transport.send(message);
-
+			Transport transport = session.getTransport("smtp");
+			transport.connect(emailConfig.getSmtpServer(), Integer.valueOf(emailConfig.getSmtpServer()), username,
+					password);
+			transport.close();
 		} catch (Exception e) {
 
 			throw new ConnectionError("Wasn't possible to establish connection due to:" + e.getMessage());
