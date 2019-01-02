@@ -16,6 +16,7 @@ $ ./build.sh && docker-compose up
 ```
 
 The application will be accessible in your browser under `localhost`
+It uses ports 80, 8080, 27017
 
 You can either retrieve the events manually (or via rest api) or simply enable email notification. 
 
