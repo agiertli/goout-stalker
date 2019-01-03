@@ -11,6 +11,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -39,7 +40,7 @@ import io.swagger.annotations.Tag;
 public class GoOutStalkerResource {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getName());
-	
+
 	@EJB
 	private JSONUtil jsonUtil;
 
@@ -98,9 +99,12 @@ public class GoOutStalkerResource {
 	@GET
 	@Path("/events/all")
 	@ApiOperation(value = "Get all events", notes = "Returns all events by all artists", response = EventsByArtists.class)
-	public Response getAllEvents() {
+	public Response getAllEvents(@QueryParam(value = "city") String city) {
 
 		ArtistList artists = dbService.findAllArtists(config.ARTIST_COL_NAME());
+		if (city != null) {
+			config.setCity(city);
+		}
 		EventsByArtists events = goOutService.getEvents(artists, config.GO_OUT_CITY());
 
 		return Response.ok(jsonUtil.convertToJson(events)).build();
@@ -116,7 +120,8 @@ public class GoOutStalkerResource {
 		} catch (ConnectionError e) {
 
 			e.printStackTrace();
-			return Response.status(Status.BAD_REQUEST).entity("{\"error\":" + "\"" + "Wrong Email Configuration provided!" + "\"}").build();
+			return Response.status(Status.BAD_REQUEST)
+					.entity("{\"error\":" + "\"" + "Wrong Email Configuration provided!" + "\"}").build();
 
 		}
 

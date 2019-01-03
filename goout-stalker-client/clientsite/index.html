@@ -226,10 +226,10 @@ function getAllEvents() {
 
       document.getElementById("overlay").style.display = "block";
       $("#overlay").append("<div class=\"loader content\"></div");
+var city = $("#gooutcityGetEvents").val();
 
 
-
- const url = BASE_URL+GET_ALL_EVENTS;
+ const url = BASE_URL+GET_ALL_EVENTS+"?city="+city;
     fetch(url)
         .then((resp) => resp.json())
         .then(function(data) {
@@ -253,13 +253,8 @@ function getAllEvents() {
 </script>
 
 <body>
-
-      <div id="overlay"></div>
-
-
-
+    <div id="overlay"></div>
     <h3 style="text-align:center">goout.net Stalker</h3>
-
     <div id="main" class="container">
         <script src="env.js"></script>
         <div class="row">
@@ -294,14 +289,28 @@ function getAllEvents() {
                     <form>
                         <textarea readonly rows="10" class="form-control" id="allEvents"></textarea>
                         </br>
-                        <button type="button" onClick="getAllEvents();" class="btn btn-primary">Display events</button>
+                        <div class="form-group">
+                            <label>Select city:</label>
+                            <select id="gooutcityGetEvents" class="form-control">
+                                <option value="Prague">Prague</option>
+                                <option value="Brno">Brno</option>
+                                <option value="Ostrava">Ostrava</option>
+                                <option value="Pilsen">Pilsen</option>
+                                <option value="Berlin">Berlin</option>
+                                <option value="Warsaw">Warsaw</option>
+                                <option value="Cracow">Cracow</option>
+                                <option value="Wroclav">Wroclav</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button type="button" onClick="getAllEvents();" class="btn btn-primary">Display events</button>
+                        </div>
                     </form>
                 </div>
             </div>
             <div class="col-5">
                 <h4>Configure Email Notifications</h4>
-                        <div id="error"></div>
-
+                <div id="error"></div>
                 <div id="emailCollapse">
                     <div id="emailConfigDiv">
                         <div id="enabledNotificiation">
@@ -345,7 +354,7 @@ function getAllEvents() {
                             <div id="buttons">
                                 <button id="emailButton" type="button" class="btn" />
                             </div>
-                        </form> 
+                        </form>
                     </div>
                 </div>
             </div>

@@ -82,6 +82,11 @@ public class GlobalConfig {
 		return notificationColName;
 	}
 
+	public void setGoOutCity(String city) {
+
+		this.city = city;
+	}
+
 	public String EMAIL_CONFIG_ID() {
 
 		return EMAIL_CONFIG_ID;
