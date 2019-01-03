@@ -11,246 +11,266 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <style>
     .vl {
-  border-left: 6px solid green;
-  height: 500px;
-}
-</style>
+      border-left: 6px solid green;
+      height: 500px;
+      }
+   </style>
 <script>
     function getArtists() {
-
-
-    const url = BASE_URL+GET_ALL_ARTISTS;
-    fetch(url)
-        .then((resp) => resp.json())
-        .then(function(data) {
-              let ul = document.getElementById(ARTISTS_SELECT_ELEMENT_ID);
-              ul.innerHTML = '';
-            let artists = data;
-            return artists.map(function(artists) {
-
-                var op = new Option();
-                op.value = artists;
-                op.text = artists;
-                document.getElementById(ARTISTS_SELECT_ELEMENT_ID).options.add(op);
-
-
-            })
-        })
-        .catch(function(error) {
-            console.log(JSON.stringify(error));
-        });
-
-
-}
-function deleteArtist() {
-
-    const selected = document.querySelectorAll('#artists option:checked');
-    let values = Array.from(selected).map(el => el.value);
-
-    const url = BASE_URL+ARTISTS;
-
-    fetch(url, {
-        method: 'delete',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(values)
-    }) .then(response => {
-//remove it from the list
-        getArtists();
-
-})
-
-}
-
-function createNode(element) {
-    return document.createElement(element);
-}
-
-function append(parent, el) {
-    return parent.appendChild(el);
-}
-
-function addArtists() {
-    var artistList = document.getElementById("artistList").value;
-    console.log(artistList);
-
-    var artistArray = artistList.split(",");
-
-    for (var i = 0; i < artistArray.length; i++) {
-        artistArray[i] = artistArray[i].trim();
-
-}
-
-    const url = BASE_URL+ARTISTS;
-
-    fetch(url, {
-        method: 'put',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(artistArray)
-    }) .then(response => {
-        getArtists();
-
-})
-
-}
-
-function getEmailConfig() {
-    var url = BASE_URL+EMAIL_CONFIG;
-
-        fetch(url)
-        .then((resp) => resp.json())
-        .then(function(data) {
-           let emailConfig = data;
-           let enabled = emailConfig.enabled;
-
-           if (enabled == true) {
-
-$("#enabled").text("Email notifications are currently enabled with the following configuration:");
-console.log("notifications are enabled");
-
-             $("#interval").val(emailConfig.interval);
-             $("#smtpServer").val(emailConfig.smtpServer);  
-             $("#smtpPort").val(emailConfig.smtpPort);  
-             $("#email").val(emailConfig.username); 
-             $("#gooutcity").val(emailConfig.city); 
-
-              $("#emailButton").attr("onclick","stopNotifications()");
-              $("#emailButton").removeClass("btn-success").addClass("btn-danger");
-              $("#emailButton").text("Disable Notifications");
-
-           } else {
-
-            $("#enabled").text("Email notifications are currently disabled");
-            console.log("notifications are disabled");
-
-              $("#emailButton").attr("onclick","enableNotifications()");
-              $("#emailButton").removeClass("btn-danger").addClass("btn-success");
-              $("#emailButton").text("Enable Notifications");        
-           }
-
-        })
-        .catch(function(error) {
-            console.log(JSON.stringify(error));
-        });
-
-
-} 
-
-    function enableNotifications () {
-
-        document.getElementById("overlay").style.display = "block";
-      $("#overlay").append("<div class=\"loader content\"></div");
-
-
-
-        var url = BASE_URL+EMAIL_START;
-
-    var emailConfig = {
-    smtpServer: $('#smtpServer').val(),
-    smtpPort: $('#smtpPort').val(),
-    username: $('#email').val(),
-    password: $('#password').val(),
-    interval: $('#interval').val(),
-    city: $('#gooutcity').val(),
-};
-
-    fetch(url, {
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(emailConfig)
-    })
-     .then((resp) => resp.json())
-        .then(function(data) {
-
-var e = data;
-            console.log(data);
-
-            if (e.hasOwnProperty('error')) {
-
-var start="<div class=\"alert alert-warning alert-dismissible fade show\" role=\"alert\"><strong>Error Occurred: </strong>";
-
-var text = data.error;
-
-var finish = "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button></div>"
-
-$("#error").append(start+text+finish);
-                document.getElementById("overlay").style.display = "none";
-
-
-}
-        getEmailConfig();
-
-                document.getElementById("overlay").style.display = "none";
-
-
-        })
-
-      .catch(function(error) {
-
-        var d = error;
-        console.log(d);
-
-
-        });
-
-    } 
-
-    function stopNotifications() {
-
-        $("#smtpServer").val("");
-        $("#smtpPort").val("");
-        $("#email").val("");
-        $("#password").val("");
-        $("#interval").val("");
-
-
-        var url = BASE_URL+EMAIL_STOP;
-            fetch(url, {
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-    }) .then(response => {
-        getEmailConfig();
-
-})
-    }
-
-
-function getAllEvents() {
-
-      document.getElementById("overlay").style.display = "block";
-      $("#overlay").append("<div class=\"loader content\"></div");
-var city = $("#gooutcityGetEvents").val();
-
-
- const url = BASE_URL+GET_ALL_EVENTS+"?city="+city;
-    fetch(url)
-        .then((resp) => resp.json())
-        .then(function(data) {
-            let events = data;
-           var printMe =  JSON.stringify(events, null, 2);
-
-            $('#allEvents').val(printMe);     
+      
+      
+      const url = BASE_URL+GET_ALL_ARTISTS;
+      fetch(url)
+          .then((resp) => resp.json())
+          .then(function(data) {
+                let ul = document.getElementById(ARTISTS_SELECT_ELEMENT_ID);
+                ul.innerHTML = '';
+              let artists = data;
+              return artists.map(function(artists) {
+      
+                  var op = new Option();
+                  op.value = artists;
+                  op.text = artists;
+                  document.getElementById(ARTISTS_SELECT_ELEMENT_ID).options.add(op);
+      
+      
+              })
+          })
+          .catch(function(error) {
+              console.log(JSON.stringify(error));
+          });
+      
+      
+      }
+      function deleteArtist() {
+      
+      const selected = document.querySelectorAll('#artists option:checked');
+      let values = Array.from(selected).map(el => el.value);
+      
+      const url = BASE_URL+ARTISTS;
+      
+      fetch(url, {
+          method: 'delete',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(values)
+      }) .then(response => {
+      //remove it from the list
+          getArtists();
+      
+      })
+      
+      }
+      
+      function createNode(element) {
+      return document.createElement(element);
+      }
+      
+      function append(parent, el) {
+      return parent.appendChild(el);
+      }
+      
+      function addArtists() {
+      var artistList = document.getElementById("artistList").value;
+      console.log(artistList);
+      
+      var artistArray = artistList.split(",");
+      
+      for (var i = 0; i < artistArray.length; i++) {
+          artistArray[i] = artistArray[i].trim();
+      
+      }
+      
+      const url = BASE_URL+ARTISTS;
+      
+      fetch(url, {
+          method: 'put',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(artistArray)
+      }) .then(response => {
+          getArtists();
+      
+      })
+      
+      }
+      
+      function getEmailConfig() {
+      var url = BASE_URL+EMAIL_CONFIG;
+      
+          fetch(url)
+          .then((resp) => resp.json())
+          .then(function(data) {
+             let emailConfig = data;
+             let enabled = emailConfig.enabled;
+      
+             if (enabled == true) {
+      
+      $("#enabled").text("Email notifications are currently enabled with the following configuration:");
+      console.log("notifications are enabled");
+      
+               $("#interval").val(emailConfig.interval);
+               $("#smtpServer").val(emailConfig.smtpServer);  
+               $("#smtpPort").val(emailConfig.smtpPort);  
+               $("#email").val(emailConfig.username); 
+               $("#gooutcity").val(emailConfig.city); 
+      
+                $("#emailButton").attr("onclick","stopNotifications()");
+                $("#emailButton").removeClass("btn-success").addClass("btn-danger");
+                $("#emailButton").text("Disable Notifications");
+      
+             } else {
+      
+              $("#enabled").text("Email notifications are currently disabled");      
+                $("#emailButton").attr("onclick","enableNotifications()");
+                $("#emailButton").removeClass("btn-danger").addClass("btn-success");
+                $("#emailButton").text("Enable Notifications");        
+             }
+      
+          })
+          .catch(function(error) {
+              console.log(JSON.stringify(error));
+          });
+      
+      
+      } 
+      
+      function enableNotifications () {
+      
+          document.getElementById("overlay").style.display = "block";
+        $("#overlay").append("<div class=\"loader content\"></div");
+      
+      
+      
+          var url = BASE_URL+EMAIL_START;
+      
+      var emailConfig = {
+      smtpServer: $('#smtpServer').val(),
+      smtpPort: $('#smtpPort').val(),
+      username: $('#email').val(),
+      password: $('#password').val(),
+      interval: $('#interval').val(),
+      city: $('#gooutcity').val(),
+      };
+      
+      fetch(url, {
+          method: 'post',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(emailConfig)
+      })
+       .then((resp) => resp.json())
+          .then(function(data) {
+      
+      var e = data;
+              console.log(data);
+      
+              if (e.hasOwnProperty('error')) {
+      
+      var start="<div class=\"alert alert-warning alert-dismissible fade show\" role=\"alert\"><strong>Error Occurred: </strong>";
+      
+      var text = data.error;
+      
+      var finish = "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button></div>"
+      
+      $("#error").append(start+text+finish);
                   document.getElementById("overlay").style.display = "none";
- 
-        })
+      
+      
+      }
+          getEmailConfig();
+      
+                  document.getElementById("overlay").style.display = "none";
+      
+      
+          })
+      
         .catch(function(error) {
-            console.log(JSON.stringify(error));
-        });
+      
+          var d = error;
+          console.log(d);
+      
+      
+          });
+      
+      } 
+      
+      function stopNotifications() {
+      
+          $("#smtpServer").val("");
+          $("#smtpPort").val("");
+          $("#email").val("");
+          $("#password").val("");
+          $("#interval").val("");
+      
+      
+          var url = BASE_URL+EMAIL_STOP;
+              fetch(url, {
+          method: 'post',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+      }) .then(response => {
+          getEmailConfig();
+      
+      })
+      }
+      
+      
+      function getAllEvents() {
+      
+        document.getElementById("overlay").style.display = "block";
+        $("#overlay").append("<div class=\"loader content\"></div");
+      var city = $("#gooutcityGetEvents").val();
+      
+      
+      const url = BASE_URL+GET_ALL_EVENTS+"?city="+city;
+      fetch(url)
+          .then((resp) => resp.json())
+          .then(function(data) {
 
-}
-
-
-
-
-
-</script>
+            $("#eventTableBody").empty();
+              let events = data;
+             var printMe =  JSON.stringify(events, null, 2);
+      
+      
+             for (var artists in events) {
+      
+              var allEventsByArtists = events[artists];
+      
+              for(var i = 0; i < allEventsByArtists.length; i++) {
+                    var  singleEvent  = allEventsByArtists[i];
+                    var newRow = "<tr><th scope=\"row\">"+artists+"</th>";
+                    newRow = newRow.concat("<td>"+singleEvent.city+"</td>");
+                    newRow = newRow.concat("<td>"+singleEvent.name+"</td>");
+                    newRow = newRow.concat("<td>"+singleEvent.date+"</td>");
+                    newRow = newRow.concat("<td>"+singleEvent.venue+"</td>");
+                    newRow = newRow.concat("<td><a href=\""+singleEvent.url+"\">Link</a></td>");
+                    newRow = newRow.concat("</tr>");
+                     $("#eventTableBody").append(newRow);
+      
+              }
+      
+             }
+      
+         //     $('#allEvents').val(printMe);     
+                    document.getElementById("overlay").style.display = "none";
+      
+          })
+          .catch(function(error) {
+              console.log(JSON.stringify(error));
+          });
+      
+      }
+      
+      
+      
+      
+      
+   </script>
 
 <body>
     <div id="overlay"></div>
@@ -258,7 +278,7 @@ var city = $("#gooutcityGetEvents").val();
     <div id="main" class="container">
         <script src="env.js"></script>
         <div class="row">
-            <div class="col-7">
+            <div class="col-8">
                 <h4>Add new artists for tracking</h4>
                 <form>
                     <div class="form-group">
@@ -269,7 +289,7 @@ var city = $("#gooutcityGetEvents").val();
                     <button type="button" onClick="addArtists();" class="btn btn-primary">Add artists</button>
                 </form>
             </div>
-            <div class="col-5">
+            <div class="col-4">
                 <h4>Artists currently being tracked</h4>
                 <div id="trackedArtists">
                     <form>
@@ -283,11 +303,26 @@ var city = $("#gooutcityGetEvents").val();
                 <hr>
             </div>
             </br></br>
-            <div class="col-7">
+            <div class="col-8">
                 <h4>Retrieve events</h4>
+                <div id="eventsTable">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Artist</th>
+                                <th scope="col">City</th>
+                                <th scope="col">Event name</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Venue</th>
+                                <th scope="col">More info</th>
+                            </tr>
+                        </thead>
+                        <tbody id="eventTableBody">
+                        </tbody>
+                    </table>
+                </div>
                 <div id="retrieveEventsCollapse">
                     <form>
-                        <textarea readonly rows="10" class="form-control" id="allEvents"></textarea>
                         </br>
                         <div class="form-group">
                             <label>Select city:</label>
@@ -308,7 +343,7 @@ var city = $("#gooutcityGetEvents").val();
                     </form>
                 </div>
             </div>
-            <div class="col-5">
+            <div class="col-4">
                 <h4>Configure Email Notifications</h4>
                 <div id="error"></div>
                 <div id="emailCollapse">
