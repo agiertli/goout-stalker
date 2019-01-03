@@ -10,24 +10,20 @@ Since the docker image of this application is not (yet) published in the Docker 
 
 
 ### Sample usage
- - Build the application
+ - Build the application and run it
 ```bash
-$ ./build.sh
+$ ./build.sh && docker-compose up
 ```
 
-This will built the binaries and store them under target/goout-stalker-thorntail.jar
+The application will be accessible in your browser under `localhost`
+It uses ports 80, 8080, 27017
 
- - Customize the application
-   - Open the goout-stalker.env and uncomment the properties so they fit your needs.
-   - Email integration is tested against gmail smtp server and in order to make this work you need to enable "Less secure apps" option in your gmail settings. More info [here](https://www.google.com/settings/security/lesssecureapps)
-   - The email address provided will be the one used in authentication against the smtp server, as well as the one sending and receiving an email (this is by design)
+You can either retrieve the events manually (or via rest api) or simply enable email notification. 
 
- - Run the application:
+ - Email integration is tested against gmail smtp server and in order to make this work you need to enable "Less secure apps" option in your gmail settings. More info [here](https://www.google.com/settings/security/lesssecureapps)
+ - The email address provided will be the one used in authentication against the smtp server, as well as the one sending and receiving an email (this is by design)
 
-```bash
-$ docker-compose up
-```
-Now all it remain is to wait. If some events have been found, you should receive an email. Example:
+Example email:
 
 ```json
 Hi,
