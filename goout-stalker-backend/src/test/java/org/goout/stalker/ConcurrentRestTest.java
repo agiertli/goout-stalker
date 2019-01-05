@@ -16,7 +16,6 @@ import javax.inject.Inject;
 
 import org.goout.stalker.model.ArtistList;
 import org.goout.stalker.model.Event;
-import org.goout.stalker.service.goout.AsyncGoOutSupplier;
 import org.goout.stalker.service.goout.GoOutService;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Test;
