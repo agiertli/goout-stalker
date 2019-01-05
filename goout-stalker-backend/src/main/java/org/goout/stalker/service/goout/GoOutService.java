@@ -4,11 +4,14 @@ import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.Json;
@@ -25,6 +28,7 @@ import org.goout.stalker.config.GlobalConfig;
 import org.goout.stalker.model.ArtistList;
 import org.goout.stalker.model.Event;
 import org.goout.stalker.model.EventsByArtists;
+import org.goout.stalker.rest.SingletonRESTClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,10 +40,44 @@ public class GoOutService {
 	@Inject
 	private GlobalConfig config;
 
+	@Inject
+	private SingletonRESTClient singletonClient;
+
 	public GoOutService() {
 	}
 
 	private Boolean isRelevant = false;
+
+	public EventsByArtists getEventsAsync(ArtistList artists, String city)
+			throws InterruptedException, ExecutionException {
+
+		Map<String, Future<Response>> allResponse = new HashMap<String, Future<Response>>();
+		EventsByArtists events = new EventsByArtists();
+
+		artists.getArtists().forEach(a -> {
+
+			try {
+				Future<Response> response = singletonClient.getClient()
+						.target(new URL(String.format(config.URL_BASE(), a)).toExternalForm())
+						.request(MediaType.APPLICATION_JSON_TYPE).async().get();
+				allResponse.put(a, response);
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		});
+
+		for (String resultArtist : allResponse.keySet()) {
+			Response r = allResponse.get(resultArtist).get();
+			String json = r.readEntity(String.class);
+			r.close();
+
+			Set<Event> eventsByArtist = transformToEvent(resultArtist, json, city);
+			events.addEvents(resultArtist, eventsByArtist);
+
+		}
+
+		return events;
+	}
 
 	public EventsByArtists getEvents(ArtistList artists, String city) {
 

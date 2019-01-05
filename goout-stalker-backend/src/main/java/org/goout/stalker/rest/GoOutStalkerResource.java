@@ -1,6 +1,7 @@
 package org.goout.stalker.rest;
 
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import javax.ejb.EJB;
 import javax.inject.Inject;
@@ -105,9 +106,22 @@ public class GoOutStalkerResource {
 		if (city != null) {
 			config.setCity(city);
 		}
-		EventsByArtists events = goOutService.getEvents(artists, config.GO_OUT_CITY());
+		try {
+			EventsByArtists events;
 
-		return Response.ok(jsonUtil.convertToJson(events)).build();
+			events = goOutService.getEventsAsync(artists, config.GO_OUT_CITY());
+			return Response.ok(jsonUtil.convertToJson(events)).build();
+
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return Response.serverError().build();
+
 	}
 
 	@POST

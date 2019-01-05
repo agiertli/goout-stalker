@@ -4,11 +4,23 @@ import java.time.format.DateTimeFormatter;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
 public class GlobalConfig {
+
+	private Client client = ClientBuilder.newBuilder().build();
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
 
 	private final String URL_BASE = "https://goout.net/services/feeder/v1/events.json?source=goout&keywords=%s&language=en&unapproved=false&clearDomain=true";
 	private final String GOOUT_HOMEPAGE = "http://goout.net";
@@ -25,6 +37,10 @@ public class GlobalConfig {
 	@Inject
 	@ConfigProperty(name = "SMTP_SERVER", defaultValue = "N/A")
 	private String smtp_server;
+
+	@Inject
+	@ConfigProperty(name = "REST_CLIENT_CONNECTION_POOL_SIZE", defaultValue = "40")
+	private String restClientPoolSize;
 
 	@Inject
 	@ConfigProperty(name = "MAIL_USERNAME", defaultValue = "N/A")
@@ -210,6 +226,10 @@ public class GlobalConfig {
 
 	public String ARTIST_COL_NAME() {
 		return artistColName;
+	}
+
+	public String REST_CLIENT_CONNECTION_POOL_SIZE() {
+		return restClientPoolSize;
 	}
 
 }
