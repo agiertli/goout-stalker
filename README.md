@@ -10,13 +10,25 @@ Since the docker image of this application is not (yet) published in the Docker 
 
 
 ### Sample usage
+The application is by default pre-defined with following artists inside goout-stalker.env
+INIT_ARTIST_LIST=dné,Jedi Mind Tricks,Aurora,Jessie
+
+You can either modify this file before building the app or you can simply configure your favourite artists during runtime, either via UI or REST interface.
+
+
  - Build the application and run it
 ```bash
 $ ./build.sh && docker-compose up
 ```
 
+If the MongoDB container will not boot up within 90s then the application will timeout. In case you need to increase this value (i.e. it's taking too much time for MongoDB to start up at your end) you can do it by altering variable WAIT_HOSTS_TIMEOUT inside docker-compose.yml file.
+
 The application will be accessible in your browser under `localhost`
-It uses ports 80, 8080, 27017
+It uses ports 80, 8080, 27017.
+
+The UI is build on top of jQuery+Bootstrap v4 (I know, so 2010..) and it's a single web page looking like this:
+
+![Home scren](homescreen.png)
 
 You can either retrieve the events manually (or via rest api) or simply enable email notification. 
 
