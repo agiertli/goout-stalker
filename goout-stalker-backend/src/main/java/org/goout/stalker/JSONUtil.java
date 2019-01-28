@@ -24,27 +24,23 @@ public class JSONUtil {
 
 		JsonObjectBuilder rootJson = Json.createObjectBuilder();
 
-		events.getAllEvents().keySet().forEach(artist -> {
+		events.getAllEvents().keySet().stream().filter(a -> !events.getEventsByArtist(a).isEmpty()).forEach(a -> {
+			Set<Event> filteredEvents = events.getEventsByArtist(a);
+			JsonArrayBuilder artistEvents = Json.createArrayBuilder();
 
-			if (!events.getEventsByArtist(artist).isEmpty()) {
+			filteredEvents.forEach(e -> {
+				JsonObjectBuilder specificEvent = Json.createObjectBuilder();
+				specificEvent.add("city", e.getCity());
+				specificEvent.add("name", e.getName());
+				specificEvent.add("date", e.getStart().toString());
+				specificEvent.add("url", e.getUrl());
+				specificEvent.add("venue", e.getVenue());
 
-				Set<Event> filteredEvents = events.getEventsByArtist(artist);
-				JsonArrayBuilder artistEvents = Json.createArrayBuilder();
-				for (Event e : filteredEvents) {
+				artistEvents.add(specificEvent);
+			});
 
-					JsonObjectBuilder specificEvent = Json.createObjectBuilder();
-					specificEvent.add("city", e.getCity());
-					specificEvent.add("name", e.getName());
-					specificEvent.add("date", e.getStart().toString());
-					specificEvent.add("url", e.getUrl());
-					specificEvent.add("venue", e.getVenue());
-
-					artistEvents.add(specificEvent);
-				}
-				JsonArray obj = artistEvents.build();
-				rootJson.add(artist, obj);
-
-			}
+			JsonArray obj = artistEvents.build();
+			rootJson.add(a, obj);
 		});
 
 		Map<String, Boolean> config = new HashMap<>();
