@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.Json;
@@ -40,7 +41,7 @@ public class GoOutService {
 	@Inject
 	private GlobalConfig config;
 
-	@Inject
+	@EJB
 	private SingletonRESTClient singletonClient;
 
 	public GoOutService() {
@@ -53,6 +54,7 @@ public class GoOutService {
 
 		Map<String, Future<Response>> allResponse = new HashMap<String, Future<Response>>();
 		EventsByArtists events = new EventsByArtists();
+		
 
 		artists.getArtists().forEach(a -> {
 
@@ -65,6 +67,8 @@ public class GoOutService {
 				e.printStackTrace();
 			}
 		});
+		
+		
 
 		for (String resultArtist : allResponse.keySet()) {
 			Response r = allResponse.get(resultArtist).get();

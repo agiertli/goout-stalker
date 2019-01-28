@@ -1,6 +1,7 @@
 package org.goout.stalker.rest;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -33,6 +34,11 @@ public class SingletonRESTClient {
 
 	public ResteasyClient getClient() {
 		return client;
+	}
+	
+	@PreDestroy
+	public void shutdown() {
+		this.client.close();
 	}
 
 }

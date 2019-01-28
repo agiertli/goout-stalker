@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.inject.Inject;
 
@@ -26,7 +27,7 @@ import org.wildfly.swarm.arquillian.DefaultDeployment;
 @DefaultDeployment(type = DefaultDeployment.Type.WAR)
 public class ConcurrentRestTest {
 
-	@Inject
+	@EJB
 	private GoOutService service;
 
 

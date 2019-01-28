@@ -106,10 +106,7 @@ public class GoOutTimerService {
 
 	@PreDestroy
 	public void stop() {
-		System.out.println("EJB Timer: Stop timers.");
-		for (Timer timer : timerService.getTimers()) {
-			System.out.println("Stopping timer: " + timer.getInfo());
-			timer.cancel();
-		}
+		logger.info("Destroying all active timers");
+		timerService.getTimers().forEach(Timer::cancel);
 	}
 }
