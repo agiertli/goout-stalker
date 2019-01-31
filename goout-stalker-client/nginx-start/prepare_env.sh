@@ -1,1 +1,0 @@
-echo "this is testing s2i hook"
