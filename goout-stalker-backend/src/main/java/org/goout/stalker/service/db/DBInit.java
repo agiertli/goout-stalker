@@ -1,5 +1,6 @@
 package org.goout.stalker.service.db;
 
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,7 +33,8 @@ public class DBInit {
 		
 		//Persist the initial artists passed via env/system property
 		
-		System.out.println(System.getProperty("file.encoding"));
+		System.out.println("Encoding:"+System.getProperty("file.encoding"));
+		System.out.println("Charset:"+Charset.defaultCharset());
 		
 		ArtistList artists = new ArtistList(new HashSet<String>(Arrays.asList(config.INIT_ARTIST_LIST().split(","))));
 		logger.info("DB Initialization with artists:" + artists);
