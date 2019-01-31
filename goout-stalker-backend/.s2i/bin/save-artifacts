@@ -1,9 +1,0 @@
-#!/bin/sh -e
-
-echo "Saving maven artifacts for future builds..."
-# Stream the .m2 folder tar archive to stdout
-if [ -d /tmp/artifacts/m2 ]; then
-    pushd /tmp/artifacts > /dev/null
-    tar cf - m2
-    popd > /dev/null
-fi
