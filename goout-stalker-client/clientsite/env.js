@@ -1,4 +1,4 @@
-var BASE_URL="http://goout-stalker-goout-stalker.192.168.64.6.nip.io/api";
+var BASE_URL="http://localhost:8080/api";
 var GET_ALL_ARTISTS="/artists/all";
 var ARTISTS = "/artists";
 var ARTISTS_SELECT_ELEMENT_ID="artists";
