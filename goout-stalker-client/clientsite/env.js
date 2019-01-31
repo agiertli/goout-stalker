@@ -1,4 +1,4 @@
-var BASE_URL="http://localhost:8080/api";
+var BASE_URL="http://172.30.1.236:8080/api";
 var GET_ALL_ARTISTS="/artists/all";
 var ARTISTS = "/artists";
 var ARTISTS_SELECT_ELEMENT_ID="artists";
