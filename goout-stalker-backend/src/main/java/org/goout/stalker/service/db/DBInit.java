@@ -30,8 +30,9 @@ public class DBInit {
 	@PostConstruct
 	public void init() {
 		
-		
 		//Persist the initial artists passed via env/system property
+		
+		System.out.println(System.getProperty("file.encoding"));
 		
 		ArtistList artists = new ArtistList(new HashSet<String>(Arrays.asList(config.INIT_ARTIST_LIST().split(","))));
 		logger.info("DB Initialization with artists:" + artists);
