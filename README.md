@@ -106,3 +106,16 @@ Its specification can be found at:
 swagger-ui
 - http://localhost:8080/index.html
 
+
+### OpenShift support
+To ease deployment on OpenShift, a template file is provided. The MongoDB requires PV. Here are instructions:
+```bash
+$ oc new-project goout-stalker
+$ oc import-image java:8 --from=registry.access.redhat.com/$ redhat-openjdk-18/openjdk18-openshift --confirm
+$ oc create -f openshift/goout-stalker-template.yml -n openshift
+$ oc new-app --template=goout-stalker-template -p DATABASE_NAME=goout-minishift -p DATABASE_PASSWORD=password1! -p DATABASE_USER=goout-stalker -p BACKEND_HOSTNAME=goout-backend.192.168.64.6.nip.io -p CLIENT_HOSTNAME=goout-client.192.168.64.6.nip.io
+```
+All of the above parameters are required. You will have to change the hostname so it corresponds to your default subdomain. If you are using minishift, here is a trick how to find it out:
+```
+$ minishift openshift config view | grep routing -A 1
+```
